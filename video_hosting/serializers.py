@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Video, Comment
+from .models import Video, Comment, HashTag, VideoRecommendation
 
 
 class VideoSerializer(serializers.ModelSerializer):
@@ -14,3 +14,15 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'owner', 'video', 'content', 'likes_count')
         model = Comment
+
+
+class HashTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ("__all__")
+        model = HashTag
+
+
+class VideoRecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ("id", "videos", "recommendation_name", "is_top_rated")
+        model = VideoRecommendation
