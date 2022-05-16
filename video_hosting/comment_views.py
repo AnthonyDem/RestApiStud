@@ -27,3 +27,14 @@ class CommentView(APIView):
             return Response(comment_serialized)
         except ObjectDoesNotExist as e:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request, pk):
+        data = request.data
+        Comment.objects.filter(id=pk).update(**data)
+        comment_updated = Comment.objects.get(id=pk)
+        serialized_video = CommentSerializer(comment_updated).data
+        return Response(serialized_video)
+
+    def delete(self, request, pk):
+        Comment.objects.get(id=pk).delete()
+        return Response(status=status.HTTP_200_OK)

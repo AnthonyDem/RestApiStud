@@ -28,3 +28,14 @@ class VideoView(APIView):
             return Response(serialized_video)
         except ObjectDoesNotExist as e:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request, pk):
+        data = request.data
+        Video.objects.filter(id=pk).update(**data)
+        video_updated = Video.objects.get(id=pk)
+        serialized_video = VideoSerializer(video_updated).data
+        return Response(serialized_video)
+
+    def delete(self, request, pk):
+        Video.objects.get(id=pk).delete()
+        return Response(status=status.HTTP_200_OK)
