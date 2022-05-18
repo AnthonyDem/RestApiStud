@@ -5,15 +5,17 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Video
-from .serializers import VideoSerializer
+from .models import Video, User
+from .serializers import VideoSerializer, VideoFullSerializer
 
 
 class VideoView(APIView):
 
     def post(self, request):
         video_data = request.data
-        video = Video.objects.create(**video_data)
+        user_id = request.data.get("user_id")
+        user = User.objects.get(id=user_id)
+        video = Video.objects.create(user=user, **video_data)
         serialized_video = VideoSerializer(video).data
         return Response(serialized_video)
 
@@ -39,3 +41,12 @@ class VideoView(APIView):
     def delete(self, request, pk):
         Video.objects.get(id=pk).delete()
         return Response(status=status.HTTP_200_OK)
+
+
+class OnlyMyVideoView(APIView):
+
+    def get(self, request):
+        user = request.user
+        videos = Video.objects.filter(user=user)
+        serialized_video = VideoFullSerializer(videos).data
+        return Response(serialized_video)

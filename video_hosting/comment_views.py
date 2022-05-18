@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Comment, Video
+from .models import Comment, Video, User
 from .serializers import CommentSerializer
 
 
@@ -11,8 +11,10 @@ class CommentView(APIView):
     def post(self, request):
         video_id = request.data.get("video")
         content = request.data.get("content")
+        user_id = request.data.get("user_id")
+        user = User.objects.get(id=user_id)
         video = Video.objects.get(id=video_id)
-        comment = Comment.objects.create(video=video, content=content)
+        comment = Comment.objects.create(video=video, content=content, user=user)
         comment_serialized = CommentSerializer(comment).data
         return Response(comment_serialized)
 
