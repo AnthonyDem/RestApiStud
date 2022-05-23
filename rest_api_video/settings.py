@@ -134,12 +134,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # EMAIL CONFIG
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "localhost"
-# EMAIL_PORT = "1025"
-# EMAIL_HOST_USER = ""
+
+
 # EMAIL_HOST_PASSWORD = ""
-# EMAIL_USE_TLS = False
+
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
@@ -170,3 +168,11 @@ DJOSER = {
         "user_delete": "djoser.serializers.UserSerializer",
     },
 }
+
+# DEFAULT_FROM_EMAIL = 'thony.dem@gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_USE_TLS = False
+# EMAIL_PORT = 587
+EMAIL_HOST = "localhost"
+
+EMAIL_HOST_USER = 'thony.dem@gmail.com'
