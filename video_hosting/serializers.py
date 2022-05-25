@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer
-from .models import Video, Comment, HashTag, VideoRecommendation
+from .models import Video, Comment, HashTag, VideoRecommendation, Channel
 from .models import User
 
 
@@ -41,3 +41,16 @@ class VideoRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ("id", "videos", "recommendation_name", "is_top_rated")
         model = VideoRecommendation
+
+
+class ChannelSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ("id", "name", "subscribers", "owner")
+        model = Channel
+
+
+class UserSubscriptionsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ("id", "email", "subscriptions")
+        model = User

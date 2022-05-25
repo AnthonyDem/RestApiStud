@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .user_views import ListUsersView, ResetPasswordView
+from .user_views import ListUsersView, ResetPasswordView, ChannelSubscribeView
 from .video_views import VideoView, OnlyMyVideoView
 from .comment_views import CommentView
 from .hash_tag_views import HashTagRetrieveUpdateDeleteView, HashTagListCreateView
@@ -33,6 +33,13 @@ urlpatterns += [
 urlpatterns += [
     path("password/reset_password/", ResetPasswordView.as_view())
 ]
+
 # urlpatterns += [
 #     path("users/", ListUsersView.as_view())
 # ]
+
+urlpatterns += [
+    path("subscribe/", ChannelSubscribeView.as_view()),
+    path("channel/subscriptions/<int:pk>/", ChannelSubscribeView.as_view()),
+    path("unsubscribe/<int:id>/", ChannelSubscribeView.as_view())
+]

@@ -2,6 +2,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 
 # Create your views here.
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -19,6 +22,8 @@ class VideoView(APIView):
         serialized_video = VideoSerializer(video).data
         return Response(serialized_video)
 
+    @method_decorator(cache_page(60 * 2))
+    @method_decorator(vary_on_cookie)
     def get(self, request, pk=None):
         try:
             if not pk:
