@@ -40,3 +40,26 @@ class ChannelSubscribeView(APIView):
         channel = Channel.objects.get(id=pk)
         serialized = ChannelSerializer(channel).data
         return Response(serialized)
+
+    def delete(self, request, pk):
+        user_id = request.user.id
+        user = User.objects.get(id=user_id)
+        channel = Channel.objects.get(id=pk)
+        user.subscriptions.remove(channel)
+        user.save()
+        return Response({"message": "Unsubscribed successfully"})
+
+
+@permission_classes((IsAuthenticated,))
+class ChannelView(APIView):
+
+    def post(self, request):
+        owner_id = request.user.id
+        owner = User.objects.get(id=owner_id)
+        Channel.objects.create(owner=owner, **request.data)
+        return Response({"message": "created successfully"})
+
+    def get(self, request):
+        channels = Channel.objects.filter(owner_id=request.user.id)
+        serialized_channels = ChannelSerializer(channels, many=True).data
+        return Response(serialized_channels)

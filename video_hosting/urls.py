@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .user_views import ListUsersView, ResetPasswordView, ChannelSubscribeView
+from .user_views import ListUsersView, ResetPasswordView, ChannelSubscribeView, ChannelView
 from .video_views import VideoView, OnlyMyVideoView
 from .comment_views import CommentView
 from .hash_tag_views import HashTagRetrieveUpdateDeleteView, HashTagListCreateView
@@ -39,7 +39,12 @@ urlpatterns += [
 # ]
 
 urlpatterns += [
+    path("channel/", ChannelView.as_view()),
+    path("channel/all-my/", ChannelView.as_view())
+]
+
+urlpatterns += [
     path("subscribe/", ChannelSubscribeView.as_view()),
     path("channel/subscriptions/<int:pk>/", ChannelSubscribeView.as_view()),
-    path("unsubscribe/<int:id>/", ChannelSubscribeView.as_view())
+    path("unsubscribe/<int:pk>/", ChannelSubscribeView.as_view())
 ]
