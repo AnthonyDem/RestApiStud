@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Comment, Video, User
 from .serializers import CommentSerializer
+from rest_api_video.celery import clear_comments
 
 
 class CommentView(APIView):
@@ -28,6 +29,7 @@ class CommentView(APIView):
             if not pk:
                 comments = Comment.objects.all()
                 comments_serialized = CommentSerializer(comments, many=True).data
+                clear_comments.delay()
                 return Response(comments_serialized)
             comment = Comment.objects.get(id=pk)
             comment_serialized = CommentSerializer(comment).data

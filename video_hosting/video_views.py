@@ -8,6 +8,8 @@ from django.views.decorators.vary import vary_on_cookie
 from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from rest_api_video.celery import block_user_for_abuse_comments
 from .models import Video, User
 from .serializers import VideoSerializer, VideoFullSerializer
 
@@ -29,6 +31,7 @@ class VideoView(APIView):
             if not pk:
                 videos = Video.objects.all()
                 serialized_video = VideoSerializer(videos, many=True).data
+                block_user_for_abuse_comments.delay()
                 return Response(serialized_video)
             video = Video.objects.get(id=pk)
             serialized_video = VideoSerializer(video).data

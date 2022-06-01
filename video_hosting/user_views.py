@@ -1,10 +1,10 @@
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 
 from video_hosting.models import User, Channel
+from video_hosting.permissions import IsAuthenticated
 from video_hosting.serializers import UserCreateCustomSerializer, UserSubscriptionsSerializer, ChannelSerializer
 
 
