@@ -55,9 +55,9 @@ class CommentView(APIView):
 class ExportMyCommentsView(APIView):
 
     def get(self, request):
-        # current_user = request.user
-        # my_comments = Comment.objects.filter(owner_id=current_user.id)
-        my_comments = Comment.objects.all()
+        current_user = request.user
+        my_comments = Comment.objects.filter(owner_id=current_user.id)
+        # my_comments = Comment.objects.all()
         alignment = Alignment(horizontal='center', vertical='center', )
         workbook = Workbook()
         ws = workbook.active
@@ -68,6 +68,12 @@ class ExportMyCommentsView(APIView):
             cell = ws.cell(column=column, row=1, value=field)
             cell.alignment = alignment
             column += 1
+        for comment in my_comments:
+            row += 1
+            ws.cell(column=1, row=row, value=comment.owner_id)
+            ws.cell(column=2, row=row, value=comment.video_id)
+            ws.cell(column=3, row=row, value=comment.content)
+            ws.cell(column=4, row=row, value=comment.likes_count)
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = f'attachment; filename=Data.xlsx'
         workbook.save(response)
