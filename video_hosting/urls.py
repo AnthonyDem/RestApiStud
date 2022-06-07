@@ -2,7 +2,7 @@ from django.urls import path
 
 from .user_views import ListUsersView, ResetPasswordView, ChannelSubscribeView, ChannelView
 from .video_views import VideoView, OnlyMyVideoView
-from .comment_views import CommentView
+from .comment_views import CommentView, ExportMyCommentsView
 from .hash_tag_views import HashTagRetrieveUpdateDeleteView, HashTagListCreateView
 
 # videos
@@ -47,4 +47,8 @@ urlpatterns += [
     path("subscribe/", ChannelSubscribeView.as_view()),
     path("channel/subscriptions/<int:pk>/", ChannelSubscribeView.as_view()),
     path("unsubscribe/<int:pk>/", ChannelSubscribeView.as_view())
+]
+
+urlpatterns += [
+    path("export/comments/", ExportMyCommentsView.as_view())
 ]

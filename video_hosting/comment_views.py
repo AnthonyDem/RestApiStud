@@ -1,7 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
+from openpyxl import Workbook
+from openpyxl.styles import Alignment
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -47,3 +50,25 @@ class CommentView(APIView):
     def delete(self, request, pk):
         Comment.objects.get(id=pk).delete()
         return Response(status=status.HTTP_200_OK)
+
+
+class ExportMyCommentsView(APIView):
+
+    def get(self, request):
+        # current_user = request.user
+        # my_comments = Comment.objects.filter(owner_id=current_user.id)
+        my_comments = Comment.objects.all()
+        alignment = Alignment(horizontal='center', vertical='center', )
+        workbook = Workbook()
+        ws = workbook.active
+        fields = ['Owner', 'Video', 'Content', 'Likes count']
+        column = 1
+        row = 1
+        for field in fields:
+            cell = ws.cell(column=column, row=1, value=field)
+            cell.alignment = alignment
+            column += 1
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = f'attachment; filename=Data.xlsx'
+        workbook.save(response)
+        return response

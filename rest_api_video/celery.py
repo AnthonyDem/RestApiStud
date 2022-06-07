@@ -56,3 +56,11 @@ def block_user_for_abuse_comments():
         user.save()
         total += 1
     logging.info(f"banned {total}")
+
+
+app.conf.beat_schedule = {
+    'add-every-30-seconds': {
+        'task': 'video_hosting.tasks.remove_hash_tag_duplicate',
+        'schedule': 30.0
+    },
+}

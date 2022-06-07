@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.views import APIView
 
 from video_hosting.models import HashTag
 from video_hosting.pagination import HashTagPagination

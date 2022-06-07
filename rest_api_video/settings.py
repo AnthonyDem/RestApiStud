@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'debug_toolbar',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -202,3 +203,5 @@ if DEBUG:  # <-- NEW
 
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
