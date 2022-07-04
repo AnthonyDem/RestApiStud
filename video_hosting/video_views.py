@@ -22,7 +22,7 @@ class VideoView(APIView):
         user = User.objects.get(id=user_id)
         video = Video.objects.create(user=user, **video_data)
         serialized_video = VideoSerializer(video).data
-        return Response(serialized_video)
+        return Response(serialized_video, status=201)
 
     @method_decorator(cache_page(60 * 2))
     @method_decorator(vary_on_cookie)

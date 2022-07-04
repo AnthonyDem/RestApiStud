@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
@@ -75,6 +77,6 @@ class ExportMyCommentsView(APIView):
             ws.cell(column=3, row=row, value=comment.content)
             ws.cell(column=4, row=row, value=comment.likes_count)
         response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = f'attachment; filename=Data.xlsx'
+        response['Content-Disposition'] = f'attachment; filename=users-{datetime.datetime.now()}.xlsx'
         workbook.save(response)
         return response

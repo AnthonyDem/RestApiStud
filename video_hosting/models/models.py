@@ -68,6 +68,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+    def unbann_user(self):
+        self.is_banned = False
+        self.save()
+
 
 class Video(models.Model):
     name = models.CharField(max_length=255, default="Untitled")
